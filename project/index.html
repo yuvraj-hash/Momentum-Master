@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Momentum Master</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <header>
+    <canvas id="particle-canvas"></canvas>
+    <div class="container">
+      <h1>Momentum Master</h1>
+      <p class="tagline">Transform Intention into Action</p>
+      <p class="motto">Awaken. Code. Build. Become.</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="app-tabs">
+      <div class="app-tab active" onclick="switchTab('presence')">Stillness & Focus</div>
+      <div class="app-tab" onclick="switchTab('growth')">Growth & Skills</div>
+      <div class="app-tab" onclick="switchTab('purpose')">Purpose & Connection</div>
+      <div class="app-tab" onclick="switchTab('action')">Action & Code</div>
+    </div>
+    
+    <!-- PRESENCE TAB -->
+    <div id="presence" class="tab-content active">
+      <div class="section">
+        <h2><span class="number">1</span> Coding Focus</h2>
+        <p>Create space for deep work and flow state. Limit distractions and focus fully on your code.</p>
+        
+        <div class="timer-container">
+          <div class="timer-display" id="focusTimer">25:00</div>
+          <div class="timer-controls">
+            <button onclick="timerModule.startTimer(25)" class="button-success">25 Min Code</button>
+            <button onclick="timerModule.startTimer(50)" class="button-primary">50 Min Deep</button>
+            <button onclick="timerModule.startTimer(5)" class="button-secondary">5 Min Break</button>
+            <button onclick="timerModule.resetTimer()" class="button-danger">Reset</button>
+          </div>
+        </div>
+        
+        <div class="mantra-container">
+          <div class="mantra" id="focusMantra">I am fully present in this moment. My attention creates valuable code.</div>
+          <div class="mantra-controls">
+            <button onclick="mantrasModule.newMantra('focus')" class="button-secondary">New Mantra</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="grid">
+        <div class="section">
+          <h2><span class="number">2</span> Digital Detox</h2>
+          <p>Protect your mind from constant noise. Set boundaries with technology to reclaim your focus.</p>
+          
+          <div class="blockers-list">
+            <div class="blocker-item">
+              <span>Slack Notifications</span>
+              <label class="toggle-switch">
+                <input type="checkbox" onchange="blockersModule.toggleBlocker(this)">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="blocker-item">
+              <span>Email Notifications</span>
+              <label class="toggle-switch">
+                <input type="checkbox" onchange="blockersModule.toggleBlocker(this)">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="blocker-item">
+              <span>News & Social Media</span>
+              <label class="toggle-switch">
+                <input type="checkbox" onchange="blockersModule.toggleBlocker(this)">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="blocker-item">
+              <span>Meeting Reminders</span>
+              <label class="toggle-switch">
+                <input type="checkbox" onchange="blockersModule.toggleBlocker(this)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="input-group" style="margin-top: 20px;">
+            <input type="text" id="newBlocker" placeholder="Add custom distraction...">
+            <button onclick="blockersModule.addBlocker()">Add</button>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2><span class="number">3</span> Mindful Coding</h2>
+          <p>Return to your breath as an anchor for presence during debugging frustrations.</p>
+          
+          <div class="mindfulness-container">
+            <div class="breathing-instruction" id="breathInstruction">Breathe in...</div>
+            <div class="breath-animation" id="breathAnimation"></div>
+            <div class="timer-display breathing" id="breathTimer">0:00</div>
+            <div class="timer-controls">
+              <button onclick="breathingModule.startBreathingExercise()" class="button-success">Start</button>
+              <button onclick="breathingModule.stopBreathingExercise()" class="button-danger">Stop</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+          
+    <!-- GROWTH TAB -->
+    <div id="growth" class="tab-content">
+      <div class="section">
+        <h2><span class="number">1</span> Developer Growth Mindset</h2>
+        <p>Embrace the journey of continuous learning. Every bug is a lesson, every feature a stepping stone.</p>
+        
+        <div class="mantra-container">
+          <div class="mantra" id="confidenceMantra">I celebrate my coding uniqueness. Self-doubt is a signal to learn, not a stop sign.</div>
+          <div class="mantra-controls">
+            <button onclick="mantrasModule.newMantra('confidence')" class="button-secondary">New Affirmation</button>
+          </div>
+        </div>
+        
+        <h3>Learning Journal</h3>
+        <textarea id="confidenceJournal" placeholder="Write about something new you learned or a coding challenge you overcame..." rows="4"></textarea>
+        <button onclick="journalModule.saveJournalEntry('confidence')" style="margin-top: 10px;">Save Entry</button>
+        
+        <div id="confidenceEntries" class="journal-entries">
+          <!-- Journal entries will be added here -->
+        </div>
+      </div>
+      
+      <div class="grid">
+        <div class="section">
+          <h2><span class="number">2</span> Coding Challenges</h2>
+          <p>Push your technical limits. Regularly tackle problems that stretch your abilities.</p>
+          
+          <div class="challenge-container">
+            <div class="challenge-text" id="currentChallenge">Implement a feature using a design pattern you've never used before.</div>
+            <div class="challenge-actions">
+              <button onclick="challengesModule.completeChallenge()" class="button-success">Complete</button>
+              <button onclick="challengesModule.skipChallenge()" class="button-secondary">Skip</button>
+            </div>
+          </div>
+          
+          <h3>My Growth Streaks</h3>
+          <div class="progress-container">
+            <div class="progress-bar" id="challengeProgress" style="width: 60%;"></div>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-number" id="challengesCompleted">12</div>
+              <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number" id="currentStreak">7</div>
+              <div class="stat-label">Day Streak</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number" id="comfortZoneExits">23</div>
+              <div class="stat-label">Growth Points</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2><span class="number">3</span> Imposter Syndrome Crusher</h2>
+          <p>Transform "I'm not good enough" into "I'm growing every day." Recognize and reframe limiting beliefs.</p>
+          
+          <div class="value-item">
+            <div class="value-icon">1</div>
+            <div class="value-text">
+              <h3>Recognize</h3>
+              <p>Notice when imposter thoughts appear</p>
+            </div>
+          </div>
+          
+          <div class="value-item">
+            <div class="value-icon">2</div>
+            <div class="value-text">
+              <h3>Question</h3>
+              <p>Ask: "What evidence contradicts this thought?"</p>
+            </div>
+          </div>
+          
+          <div class="value-item">
+            <div class="value-icon">3</div>
+            <div class="value-text">
+              <h3>Reframe</h3>
+              <p>Create a new empowering belief</p>
+            </div>
+          </div>
+          
+          <h3>Log a Limiting Belief</h3>
+          <textarea id="limitingBelief" placeholder="I noticed myself thinking..." rows="2"></textarea>
+          <textarea id="empoweringAlternative" placeholder="A more empowering perspective is..." rows="2" style="margin-top: 10px;"></textarea>
+          <button onclick="beliefsModule.saveBeliefReframe()" style="margin-top: 10px;">Transform This Belief</button>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2><span class="number">4</span> Skill Development</h2>
+        <p>Track your progress on technologies and skills that matter to your growth as a developer.</p>
+        
+        <h3>My Development Skills</h3>
+        <div class="skill-tracking" id="skillTracking">
+          <div class="value-item">
+            <div class="value-text">
+              <h3>JavaScript</h3>
+              <p>Practice minutes this week: 180</p>
+            </div>
+            <div class="value-progress">
+              <div class="value-bar" style="width: 75%;"></div>
+            </div>
+          </div>
+          
+          <div class="value-item">
+            <div class="value-text">
+              <h3>React</h3>
+              <p>Practice minutes this week: 120</p>
+            </div>
+            <div class="value-progress">
+              <div class="value-bar" style="width: 60%;"></div>
+            </div>
+          </div>
+          
+          <div class="value-item">
+            <div class="value-text">
+              <h3>System Design</h3>
+              <p>Practice minutes this week: 45</p>
+            </div>
+            <div class="value-progress">
+              <div class="value-bar" style="width: 30%;"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="input-group" style="margin-top: 20px;">
+          <input type="text" id="newSkill" placeholder="Add new skill to develop...">
+          <button onclick="skillsModule.addSkill()">Add Skill</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- PURPOSE TAB -->
+    <div id="purpose" class="tab-content">
+      <div class="section">
+        <h2><span class="number">1</span> Developer Values</h2>
+        <p>Define what matters in your code and career. Quality? Innovation? Impact? Sustainability?</p>
+        
+        <h3>Select Your Core Values</h3>
+        <div class="core-values">
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Clean Code</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Continuous Learning</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Innovation</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">User Experience</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Accessibility</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Performance</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Collaboration</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Mentorship</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Open Source</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Technical Excellence</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Work-Life Balance</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Documentation</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Security</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Simplicity</div>
+          <div class="value-tag" onclick="valuesModule.toggleValue(this)">Scalability</div>
+        </div>
+        
+        <div class="input-group" style="margin-top: 20px;">
+          <input type="text" id="customValue" placeholder="Add custom value...">
+          <button onclick="valuesModule.addCustomValue()">Add</button>
+        </div>
+        
+        <h3>Daily Value Alignment Check</h3>
+        <div id="valueCheck" class="value-check">
+          <div class="value-item">
+            <div class="value-text">
+              <h3>Clean Code</h3>
+              <p>How well did your coding align with this value today?</p>
+            </div>
+            <div class="value-progress">
+              <div class="value-bar" style="width: 75%;"></div>
+            </div>
+          </div>
+          
+          <div class="value-item">
+            <div class="value-text">
+              <h3>Continuous Learning</h3>
+              <p>How well did your actions align with this value today?</p>
+            </div>
+            <div class="value-progress">
+              <div class="value-bar" style="width: 60%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="grid">
+        <div class="section">
+          <h2><span class="number">2</span> Developer Network</h2>
+          <p>Build connections with mentors and peers. Share knowledge, get feedback, and grow together.</p>
+          
+          <div class="connection-list">
+            <div class="connection-item">
+              <div class="connection-avatar">MS</div>
+              <div class="connection-info">
+                <div class="connection-name">Michael Smith</div>
+                <div class="connection-role">Senior Developer Mentor</div>
+              </div>
+              <button class="connection-action" onclick="networkModule.scheduleConnection(0)">📆</button>
+            </div>
+            
+            <div class="connection-item">
+              <div class="connection-avatar">JD</div>
+              <div class="connection-info">
+                <div class="connection-name">Jane Doe</div>
+                <div class="connection-role">Pair Programming Partner</div>
+              </div>
+              <button class="connection-action" onclick="networkModule.scheduleConnection(1)">📆</button>
+            </div>
+            
+            <div class="connection-item">
+              <div class="connection-avatar">RJ</div>
+              <div class="connection-info">
+                <div class="connection-name">Robert Johnson</div>
+                <div class="connection-role">Tech Lead</div>
+              </div>
+              <button class="connection-action" onclick="networkModule.scheduleConnection(2)">📆</button>
+            </div>
+          </div>
+          
+          <div class="input-group" style="margin-top: 20px;">
+            <input type="text" id="connectionName" placeholder="Name...">
+            <input type="text" id="connectionRole" placeholder="Role..." style="border-radius: 0;">
+            <button onclick="networkModule.addConnection()">Add Contact</button>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2><span class="number">3</span> Career Vision</h2>
+          <p>Define your purpose as a developer. What problems do you want to solve? What impact do you want to make?</p>
+          
+          <h3>Vision Journal</h3>
+          <textarea id="purposeJournal" placeholder="What's the larger purpose behind your work? How do you want to grow and contribute as a developer?" rows="4"></textarea>
+          <button onclick="journalModule.saveJournalEntry('purpose')" style="margin-top: 10px;">Save Entry</button>
+          
+          <div id="purposeEntries" class="journal-entries">
+            <div class="journal-entry">
+              <div class="journal-date">April 18, 2025</div>
+              <div class="journal-content">Today I realized I'm most energized when building tools that help other developers be more productive. I want to focus more on developer experience and tooling in my career.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2><span class="number">4</span> Developer Wisdom</h2>
+        <p>Collect insights that guide your practice and growth as a developer.</p>
+        
+        <div class="quotes-carousel">
+          <div class="quote-item active">
+            <div>
+              <div class="quote-text">"Any fool can write code that a computer can understand. Good programmers write code that humans can understand."</div>
+              <div class="quote-author">Martin Fowler</div>
+            </div>
+          </div>
+          <div class="quote-item">
+            <div>
+              <div class="quote-text">"Simplicity is the ultimate sophistication. It takes a lot of hard work to make something simple."</div>
+              <div class="quote-author">Steve Jobs</div>
+            </div>
+          </div>
+          <div class="quote-item">
+            <div>
+              <div class="quote-text">"The most important property of a program is whether it accomplishes the intention of its user."</div>
+              <div class="quote-author">C.A.R. Hoare</div>
+            </div>
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 10px;">
+          <button onclick="quotesModule.prevQuote()" class="button-secondary">←</button>
+          <button onclick="quotesModule.nextQuote()" class="button-secondary">→</button>
+        </div>
+        
+        <div class="input-group" style="margin-top: 20px;">
+          <input type="text" id="newQuote" placeholder="Add your own quote or insight...">
+          <input type="text" id="quoteAuthor" placeholder="Source/Author..." style="border-radius: 0;">
+          <button onclick="quotesModule.addQuote()">Add</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ACTION TAB -->
+    <div id="action" class="tab-content">
+      <div class="section">
+        <h2><span class="number">1</span> Coding Momentum</h2>
+        <p>Break large tasks into small, actionable steps. Small wins compound into significant progress.</p>
+        
+        <h3>Today's Development Tasks</h3>
+        <div class="input-group">
+          <input type="text" id="newTask" placeholder="Add a coding task...">
+          <button onclick="tasksModule.addTask()">Add</button>
+        </div>
+        
+        <div id="taskList" class="task-list">
+          <div class="task-item">
+            <input type="checkbox" onchange="tasksModule.toggleTask(this)">
+            <span class="task-text">Refactor authentication module</span>
+            <div class="task-actions">
+              <button class="delete-btn" onclick="tasksModule.deleteTask(this)">×</button>
+            </div>
+          </div>
+          <div class="task-item">
+            <input type="checkbox" onchange="tasksModule.toggleTask(this)">
+            <span class="task-text">Write unit tests for new API</span>
+            <div class="task-actions">
+              <button class="delete-btn" onclick="tasksModule.deleteTask(this)">×</button>
+            </div>
+          </div>
+          <div class="task-item">
+            <input type="checkbox" onchange="tasksModule.toggleTask(this)">
+            <span class="task-text">Fix responsive layout bug</span>
+            <div class="task-actions">
+              <button class="delete-btn" onclick="tasksModule.deleteTask(this)">×</button>
+            </div>
+          </div>
+        </div>
+        
+        <h3>Task Progress</h3>
+        <div class="progress-container">
+          <div class="progress-bar" id="taskProgress" style="width: 33%;"></div>
+        </div>
+      </div>
+      
+      <div class="grid">
+        <div class="section">
+          <h2><span class="number">2</span> Code Health</h2>
+          <p>Track metrics for your codebase. Quality matters as much as quantity.</p>
+          
+          <h3>Codebase Metrics</h3>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-number">97%</div>
+              <div class="stat-label">Test Coverage</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">A+</div>
+              <div class="stat-label">Code Quality</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">12</div>
+              <div class="stat-label">PR Reviews</div>
+            </div>
+          </div>
+          
+          <h3>Project Health</h3>
+          <div id="codeMetrics" class="code-metrics">
+            <div class="value-item">
+              <div class="value-text">
+                <h3>Bug Fixes</h3>
+                <p>This week: 5</p>
+              </div>
+              <div class="value-progress">
+                <div class="value-bar" style="width: 40%;"></div>
+              </div>
+            </div>
+            
+            <div class="value-item">
+              <div class="value-text">
+                <h3>New Features</h3>
+                <p>This week: 3</p>
+              </div>
+              <div class="value-progress">
+                <div class="value-bar" style="width: 80%;"></div>
+              </div>
+            </div>
+            
+            <div class="value-item">
+              <div class="value-text">
+                <h3>Refactoring</h3>
+                <p>This week: 2</p>
+              </div>
+              <div class="value-progress">
+                <div class="value-bar" style="width: 60%;"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="input-group" style="margin-top: 20px;">
+            <input type="text" id="metricName" placeholder="Metric name...">
+            <input type="number" id="metricValue" placeholder="Value..." style="border-radius: 0;">
+            <button onclick="codeMetricsModule.addCodeMetric()">Log Metric</button>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2><span class="number">3</span> GitHub Activity</h2>
+          <p>Track your open source and personal project contributions.</p>
+          
+          <div class="github-activity">
+            <div class="github-grid">
+              <!-- GitHub-style contribution grid -->
+              <div class="gh-row">
+                <div class="gh-cell" style="background-color: #ebedf0;"></div>
+                <div class="gh-cell" style="background-color: #9be9a8;"></div>
+                <div class="gh-cell" style="background-color: #ebedf0;"></div>
+                <div class="gh-cell" style="background-color: #ebedf0;"></div>
+                <div class="gh-cell" style="background-color: #ebedf0;"></div>
+                <div class="gh-cell" style="background-color: #40c463;"></div>
+                <div class="gh-cell" style="background-color: #9be9a8;"></div>
+              </div>
+              <div class="gh-row">
+                <div class="gh-cell" style="background-color: #9be9a8;"></div>
+                <div class="gh-cell" style="background-color: #40c463;"></div>
+                <div class="gh-cell" style="background-color: #30a14e;"></div>
+                <div class="gh-cell" style="background-color: #9be9a8;"></div>
+                <div class="gh-cell" style="background-color: #ebedf0;"></div>
+                <div class="gh-cell" style="background-color: #9be9a8;"></div>
+                <div class="gh-cell" style="background-color: #ebedf0;"></div>
+              </div>
+              <div class="gh-row">
+                <div class="gh-cell" style="background-color: #ebedf0;"></div>
+                <div class="gh-cell" style="background-color: #9be9a8;"></div>
+                <div class="gh-cell" style="background-color: #216e39;"></div>
+                <div class="gh-cell" style="background-color: #30a14e;"></div>
+                <div class="gh-cell" style="background-color: #9be9a8;"></div>
+                <div class="gh-cell" style="background-color: #40c463;"></div>
+                <div class="gh-cell" style="background-color: #9be9a8;"></div>
+              </div>
+            </div>
+            <div class="github-stats">
+              <p>This week: <strong>12 contributions</strong></p>
+              <p>Current streak: <strong>7 days</strong></p>
+              <p>Longest streak: <strong>14 days</strong></p>
+            </div>
+          </div>
+          
+          <div class="input-group" style="margin-top: 20px;">
+            <input type="text" id="repoName" placeholder="Repository name...">
+            <input type="number" id="commitCount" placeholder="Commits..." style="border-radius: 0;">
+            <button onclick="githubModule.addContribution()">Add Contribution</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2><span class="number">4</span> Code Snippets</h2>
+        <p>Save useful code patterns, solutions, and resources for future reference.</p>
+        
+        <div class="snippet-controls">
+          <div class="input-group">
+            <input type="text" id="snippetTitle" placeholder="Snippet title...">
+            <select id="snippetLanguage" style="border-radius: 0;">
+              <option value="javascript">JavaScript</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="python">Python</option>
+              <option value="java">Java</option>
+              <option value="csharp">C#</option>
+              <option value="sql">SQL</option>
+            </select>
+          </div>
+          <textarea id="snippetCode" placeholder="// Paste your code here..." rows="5" class="code-input"></textarea>
+          <button onclick="snippetsModule.saveSnippet()" class="button-success full-width">Save Snippet</button>
+        </div>
+        
+        <div id="snippetsList" class="snippets-list">
+          <div class="snippet-item">
+            <div class="snippet-header">
+              <h3>Debounce Function</h3>
+              <span class="snippet-language">JavaScript</span>
+            </div>
+            <pre class="snippet-code">function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func.apply(this, args);
+    }, wait);
+  };
+}</pre>
+            <div class="snippet-actions">
+              <button class="button-secondary" onclick="snippetsModule.copySnippet(this)">Copy</button>
+              <button class="button-danger" onclick="snippetsModule.deleteSnippet(this)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container">
+      <p>"Build to learn. Code to grow. Ship to validate. Iterate to improve."</p>
+      <div class="footer-links">
+        <a href="#" onclick="event.preventDefault(); showModal('about')">About</a>
+        <a href="#" onclick="event.preventDefault(); showModal('settings')">Settings</a>
+        <a href="#" onclick="event.preventDefault(); showModal('export')">Export Data</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="appModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="./js/animation.js"></script>
+  <script src="./js/timer.js"></script>
+  <script src="./js/mantras.js"></script>
+  <script src="./js/tasks.js"></script>
+  <script src="./js/blockers.js"></script>
+  <script src="./js/breathing.js"></script>
+  <script src="./js/time.js"></script>
+  <script src="./js/challenges.js"></script>
+  <script src="./js/beliefs.js"></script>
+  <script src="./js/skills.js"></script>
+  <script src="./js/values.js"></script>
+  <script src="./js/network.js"></script>
+  <script src="./js/journal.js"></script>
+  <script src="./js/quotes.js"></script>
+  <script src="./js/github.js"></script>
+  <script src="./js/snippets.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
